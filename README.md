@@ -1,6 +1,7 @@
 # Arduino Projects
 
 Created arduino projects using C programming language and ATMega328p Arduino UNO.
+![Arduino ATMega328p](img/arduino-scheme.png)
 
 ## Projects
 
@@ -9,5 +10,3 @@ Created arduino projects using C programming language and ATMega328p Arduino UNO
 ### 5161AS 7-segment display project
 ---
 **`Video` ->  [7-segment display ready project demonstration](https://youtube.com/shorts/5uuckVPyVYM).**
-
-![Circuit](img/arduino-scheme.png)
