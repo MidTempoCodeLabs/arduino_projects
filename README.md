@@ -14,5 +14,8 @@ Created arduino projects using C programming language and ATMega328p Arduino UNO
 
 #### [`Project Link`](https://github.com/MidTempoCodeLabs/arduino_projects/tree/main/7_segment_screen_5161AS)
 
-#### connection diagram
+#### connection photo
 ![7-segment](img/7-segment.jpg)
+
+#### Created scheme in Fritzing
+![fritzing-7-segment](img/7-segment-fritzing.png)
