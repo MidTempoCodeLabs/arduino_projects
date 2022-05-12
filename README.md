@@ -1,6 +1,23 @@
 # Arduino Projects
 
 Created arduino projects using C programming language and ATMega328p Arduino UNO.
+
+## Components List
+
+|                            |       Count        | 
+| -------------------------- | :----------------: | 
+| Resistors                  |       10...15      | 
+| Piezoelectric Buzzer       |       1            | 
+| LCD1602 with I2C interface |       1            | 
+| 4x4 Micro Switch Matrix Keypad|    1            | 
+| No misconcepted commands   |         ✔️         | 
+| Professional info sources  |         ✔️         | 
+| Clean sheet/template       |         ✔️         | 
+| Easy to customize          |         ✔️         | 
+| Categorized by functions   |         ✔️         | 
+| New commands/values        |         ✔️         | 
+| No old command leftovers   |
+
 ![Arduino ATMega328p](img/arduino-scheme.png)
 ![My Arduino ATMega328p](img/my-microcontroller.jpg)
 
