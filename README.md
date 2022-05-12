@@ -8,15 +8,21 @@ Created arduino projects using C programming language and ATMega328p Arduino UNO
 | -------------------------- | :----------------: | 
 | Resistors                  |       10...15      | 
 | Piezoelectric Buzzer       |       1            | 
-| LCD1602 with I2C interface |       1            | 
+| LCD1602 with I2C interface \n (connected with a soldering iron) |       1            | 
 | 4x4 Micro Switch Matrix Keypad|    1            | 
-| No misconcepted commands   |         ✔️         | 
-| Professional info sources  |         ✔️         | 
-| Clean sheet/template       |         ✔️         | 
-| Easy to customize          |         ✔️         | 
-| Categorized by functions   |         ✔️         | 
-| New commands/values        |         ✔️         | 
-| No old command leftovers   |
+| 8x8 LED matrix             |       1            | 
+| 5461AS-1 4-digit 7-segment LED display  |        1          | 
+| 5461AS 1-digit 7-segment LED display       |         1        | 
+| Sound Sensor Module        |       1            | 
+| DHT11 Temperature And Relative Humidity Sensor   |         1         | 
+| KEYES RGB LED module       |         1          | 
+| AC Relay Module (TONGLING 5VDC JQC-3FF-S-Z)  |         1      |
+| Water Sensor v1.0          |       1            |
+| RFID Reader                |       1            |
+| Potentiometer              |       1            |
+| LEDs                       |       70...75      |
+| Micro Servo                |       1            |
+| mh real time clock module 2|       1            |
 
 ![Arduino ATMega328p](img/arduino-scheme.png)
 ![My Arduino ATMega328p](img/my-microcontroller.jpg)
