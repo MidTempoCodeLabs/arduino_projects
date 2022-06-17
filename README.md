@@ -60,12 +60,25 @@ Created arduino projects using C programming language and ATMega328p Arduino UNO
 
 ### LCD1602 DHT11 BUZZER
 ---
-**`Video` ->  [2 LEDs blinking project demonstration](https://youtube.com/shorts/E62ZbkbDvd0).**
+<!-- **`Video` ->  [2 LEDs blinking project demonstration](https://youtube.com/shorts/E62ZbkbDvd0).** -->
 
 #### [`Project Link`](https://github.com/MidTempoCodeLabs/arduino_projects/tree/main/2_LEDs_blinking)
 
-#### connection photo
-![2-LEDs-scheme](img/2_LEDs_blinking/2-LEDs-scheme.jpg)
-
 #### Created scheme in Fritzing
-![fritzing-2-LEDs](img/2_LEDs_blinking/2-LEDs-Fritzing.png)
+![LCD1602-DHT11-scheme](img/LCD1602_DHT11/lcd1602_dht11_fritzing.png)
+
+#### connection photos
+![part-1](img/LCD1602_DHT11/part1.jpg)
+---
+![part-2](img/LCD1602_DHT11/part2.jpg)
+---
+![part-3](img/LCD1602_DHT11/part3.jpg)
+---
+![part-4](img/LCD1602_DHT11/part4.jpg)
+---
+![part-5](img/LCD1602_DHT11/part5.jpg)
+---
+![part-6](img/LCD1602_DHT11/part6.jpg)
+---
+![part-7](img/LCD1602_DHT11/part7.jpg)
+---
