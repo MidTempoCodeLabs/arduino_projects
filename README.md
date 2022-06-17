@@ -31,6 +31,7 @@ Created arduino projects using C programming language and ATMega328p Arduino UNO
 
 * [5161AS 7-segment display project](#5161AS-7-segment-display-project)
 * [2 LEDs blinking](#2-leds-blinking)
+* [LCD1602 DHT11 BUZZER](#lcd1602-dht11-buzzer)
 
 ### 5161AS 7-segment display project
 ---
@@ -45,6 +46,19 @@ Created arduino projects using C programming language and ATMega328p Arduino UNO
 ![fritzing-7-segment](img/7-segment-fritzing.png)
 
 ### 2 LEDs blinking
+---
+**`Video` ->  [2 LEDs blinking project demonstration](https://youtube.com/shorts/E62ZbkbDvd0).**
+
+#### [`Project Link`](https://github.com/MidTempoCodeLabs/arduino_projects/tree/main/2_LEDs_blinking)
+
+#### connection photo
+![2-LEDs-scheme](img/2_LEDs_blinking/2-LEDs-scheme.jpg)
+
+#### Created scheme in Fritzing
+![fritzing-2-LEDs](img/2_LEDs_blinking/2-LEDs-Fritzing.png)
+
+
+### LCD1602 DHT11 BUZZER
 ---
 **`Video` ->  [2 LEDs blinking project demonstration](https://youtube.com/shorts/E62ZbkbDvd0).**
 

@@ -25,15 +25,16 @@
 #define ARR_LEN(arr) ((int) (sizeof (arr) / sizeof(arr)[0]))
 #define HIGH_TEMPERATURE 28.0
 
-uint8_t program_author[]   = "Nikita Nikitins";
-uint8_t program_version[]  = "LCD-AVR-4d (gcc)";
-uint8_t program_created_text[] = "Created:";
-uint8_t program_date[]     = "June 4, 2022";
-uint8_t temperature_string_main[]     = "Temperature:";
-uint8_t humidity_string_main[]     = "Humidity:";
+const uint8_t PROGRAM_AUTHOR[]   = "Nikita Nikitins";
+const uint8_t PROGRAM_VERSION[]  = "LCD-AVR-4d (gcc)";
+const uint8_t PROGRAM_CREATED_TEXT[] = "Created:";
+const uint8_t PROGRAM_DATE[]     = "June 4, 2022";
+const uint8_t TEMPERATURE_STRING[]     = "Temperature:";
+const uint8_t HIGH_TEMPERATURE_STRING[]     = "HIGH Temperature!";
+const uint8_t HUMIDITY_STRING[]     = "Humidity:";
 
 uint8_t c=0,I_RH,D_RH,I_Temp,D_Temp,CheckSum;
-float humidityCurr, temperatureCurr;
+float humidityCurr=0.0, temperatureCurr=0.0;
 
 void setup();
 void initLCD();
@@ -43,25 +44,77 @@ void dhtRequest();
 void dhtResponse();
 uint8_t dhtReceiveData();
 float getMeasurementFromDht(uint8_t intValue, uint8_t decimalValue, char* valueString, char* postFix);
+void readDHTSensorData();
 
 void buzzerPlay(float duration, float frequency);
+void processCriticalTemperature();
 
 // Timer logic
 void setupTimer();
-int in_counter = 0;
+volatile int in_counter = 0;
 bool showTemperature = true;
 
+volatile bool executeTimer = false;
+
 int main(void) {
+	// Pause interrupts
+	cli(); 
 	setup(); // also shows initial text
-	
-	_delay_ms(500);
-	
-	sei(); // Allows interrupt
 	
 	setupTimer();
 	
     /* Replace with your application code */
-    while(1) {}
+    while(1) {
+		if (executeTimer) {
+			if (in_counter == 0) {
+				lcd_clear_screen();
+				if (showTemperature) {
+					lcd_write_string_4d(TEMPERATURE_STRING);
+					} else {
+					lcd_write_string_4d(HUMIDITY_STRING);
+				}
+			}
+			
+			in_counter++;
+			
+			//if(in_counterThread1<= 60)
+			
+			// Start Thread1
+			// Every 30s
+			
+			if(in_counter>=30) {
+				showTemperature = !showTemperature;
+				in_counter =0;
+			}
+			
+			readDHTSensorData();
+			
+			if ((I_RH + D_RH + I_Temp + D_Temp) != CheckSum) {
+				lcd_clear_screen();
+				lcd_write_string_4d("DHT11_READ_ERR");
+				} else {
+				lcd_write_instruction_4d(LCD_SET_CURSOR | LCD_LINE_TWO);
+				
+				char humidityStringValue[20];
+				humidityCurr = getMeasurementFromDht(I_RH, D_RH, humidityStringValue, "%");
+				
+				char temperatureStringValue[20];
+				temperatureCurr = getMeasurementFromDht(I_Temp, D_Temp, temperatureStringValue, "C");
+				
+				if (temperatureCurr > HIGH_TEMPERATURE) {
+					processCriticalTemperature();
+				}
+				
+				if (showTemperature) {
+					lcd_write_string_4d(temperatureStringValue);
+					} else {
+					lcd_write_string_4d(humidityStringValue);
+				}
+			}
+			
+			executeTimer = false;
+		}
+	}
 		
 	return 0;
 }
@@ -86,7 +139,7 @@ void initLCD(){
 }
 
 void displayInitialText() {
-	uint8_t* initialTextCollections[2][2] = {{program_author, program_version}, {program_created_text, program_date}};
+	uint8_t* initialTextCollections[2][2] = {{PROGRAM_AUTHOR, PROGRAM_VERSION}, {PROGRAM_CREATED_TEXT, PROGRAM_DATE}};
 	
 	for(int i=0;i<ARR_LEN(initialTextCollections); i++) {
 		displayTextTwoLines(initialTextCollections[i][0], initialTextCollections[i][1]);
@@ -162,6 +215,21 @@ void buzzerPlay(float duration, float frequency) {
 	}
 }
 
+void readDHTSensorData() {
+	dhtRequest();
+	dhtResponse();
+	I_RH=dhtReceiveData();	/* store first eight bit in I_RH */
+	D_RH=dhtReceiveData();	/* store next eight bit in D_RH */
+	I_Temp=dhtReceiveData();	/* store next eight bit in I_Temp */
+	D_Temp=dhtReceiveData();	/* store next eight bit in D_Temp */
+	CheckSum=dhtReceiveData();/* store next eight bit in CheckSum */
+}
+
+void processCriticalTemperature() {
+	buzzerPlay(400,1600);
+	buzzerPlay(400,1000);
+}
+
 // Timer
 // A timer is basically nothing else than a certain register in the micro, which is increased (or decreased) continuously by 1 under hardware control.
 // Instead of coding instructions in the program that are executed regularly and increment a register by 1, the microcontroller does this all by itself!
@@ -194,67 +262,29 @@ void buzzerPlay(float duration, float frequency) {
 * https://github.com/TheMACLayer/atmega328p-tutorial/blob/master/Ep3_register_logic/register%20_logic.md
 */
 void setupTimer() {
-	OCR1A = 31249; // One tick is used to return to zero // (30 * 16000000)/256 - 1 = 1874999 the number is bigger, than is allowed, not more than 4.19 second with oscilator = 1024; I used 0.5 s with 256osc
-	TCCR1B |= (1 << CS02);        // prescalar 256
-	TCCR1B |= (1 << WGM12);   // turns on CTC mode for timer1
-	TIMSK1 |= (1 << OCIE1A);  // enable timer compare interrupt
-	TCNT1 = 0;                // 16 bit register
+	 TCCR1A = 0;
+	 TCCR1B = 0;
+	 TCNT1  = 0;
+	 
+	 OCR1A = 15624; // 1s; One tick is used to return to zero // (30 * 16000000)/256 - 1 = 1874999 the number is bigger, than is allowed, not more than 4.19 second with oscilator = 1024; I used 1s
+	
+	// Clear timer on compare match
+	// The timer resets itself when it reaches 15625 (OCR1A +1)
+	TCCR1B |= (1 << WGM12);
+	
+	// Set the prescaler to 1024 (See ATMega328PU datasheet for infos)
+	TCCR1B |= (1 << CS12) | (1 << CS10);
+	
+	// Enable timer interrupt
+	TIMSK1 |= (1 << OCIE1A);
+
+	// Enable interrupts
+	sei();             // 16 bit register
 }
 
 // ISR
 ISR(TIMER1_COMPA_vect) {
 	
-	if (in_counter == 0) {
-		lcd_clear_screen();
-		if (showTemperature) {
-			lcd_write_string_4d(temperature_string_main);	
-		} else {
-			lcd_write_string_4d(humidity_string_main);	
-		}
-	}
-	
-	in_counter++;
-	
-	//if(in_counterThread1<= 60)
-	
-	// Start Thread1
-	// Every 30s it is 30/0.5 = 60, where 0.5s is interrupt
-	
-	if(in_counter==60) {
-		showTemperature = !showTemperature;
-		in_counter =0;
-	}
-	
-	dhtRequest();
-	dhtResponse();
-	I_RH=dhtReceiveData();	/* store first eight bit in I_RH */
-	D_RH=dhtReceiveData();	/* store next eight bit in D_RH */
-	I_Temp=dhtReceiveData();	/* store next eight bit in I_Temp */
-	D_Temp=dhtReceiveData();	/* store next eight bit in D_Temp */
-	CheckSum=dhtReceiveData();/* store next eight bit in CheckSum */
-	
-	if ((I_RH + D_RH + I_Temp + D_Temp) != CheckSum) {
-		lcd_clear_screen();
-		lcd_write_string_4d("DHT11_READ_ERR");
-	} else {
-		lcd_write_instruction_4d(LCD_SET_CURSOR | LCD_LINE_TWO);
-		
-		char humidityString[20];
-		humidityCurr = getMeasurementFromDht(I_RH, D_RH, humidityString, "%");
-		
-		char temperatureString[20];
-		temperatureCurr = getMeasurementFromDht(I_Temp, D_Temp, temperatureString, "C");
-		
-		if (showTemperature) {
-			lcd_write_string_4d(temperatureString);
-		} else {
-			lcd_write_string_4d(humidityString);
-		}
-		
-		if (temperatureCurr > HIGH_TEMPERATURE) {
-			buzzerPlay(400,1600);
-			buzzerPlay(400,1000);
-		}
-	}
+	executeTimer = true;
 }
 
