@@ -60,7 +60,7 @@ Created arduino projects using C programming language and ATMega328p Arduino UNO
 
 ### LCD1602 DHT11 BUZZER
 ---
-**`Video` ->  [2 LEDs blinking project demonstration](https://youtu.be/ypBGcvh5QVY).**
+**`Video` ->  [LCD1602 & DHT11 && BUZZER ](https://youtu.be/ypBGcvh5QVY).**
 
 #### [`Project Link`](https://github.com/MidTempoCodeLabs/arduino_projects/tree/main/2_LEDs_blinking)
 
